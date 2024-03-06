@@ -1,7 +1,0 @@
-v 4
-file . "d_latch_tb.vhdl" "10aa940f023c99632f8a7079ba74581409e00ea7" "20240306123812.347":
-  entity d_latch_tb at 1( 0) + 0 on 37;
-  architecture behave of d_latch_tb at 8( 110) + 0 on 38;
-file . "d_latch.vhdl" "c3b28a03a851b2995edab0ceb48f782e2f61e2d9" "20240306123812.345":
-  entity d_latch at 1( 0) + 0 on 35;
-  architecture rtl of d_latch at 15( 220) + 0 on 36;
