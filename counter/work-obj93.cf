@@ -1,0 +1,7 @@
+v 4
+file . "counter_tb.vhdl" "b765ba5d2780b73a2af80e4d583920e08706a1c3" "20240306132948.020":
+  entity counter_tb at 1( 0) + 0 on 13;
+  architecture behave of counter_tb at 8( 110) + 0 on 14;
+file . "counter.vhdl" "82285cb2a0928caebcbed44834269639df83e3f9" "20240306132948.019":
+  entity counter at 1( 0) + 0 on 11;
+  architecture structure of counter at 15( 220) + 0 on 12;

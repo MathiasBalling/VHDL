@@ -1,7 +1,0 @@
-v 4
-file . "test_testbench.vhdl" "fd9e602ec3a57c4834a2fac4b8cb7061e1180038" "20240221141643.693":
-  entity extb at 1( 0) + 0 on 13;
-  architecture behavior of extb at 9( 75) + 0 on 14;
-file . "text.vhdl" "b13ed462f2940622dfdc3b9d6b77cf362d7d4f01" "20240221141631.509":
-  entity ex at 1( 0) + 0 on 11;
-  architecture behavioral of ex at 10( 166) + 0 on 12;
