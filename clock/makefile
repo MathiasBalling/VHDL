@@ -34,7 +34,7 @@ compile:
 # Remember to add assertion or finish to the testbench!
 # E.g. "assert false report "End of test" severity note; wait;"
 # E.g. "report "End of test"; finish;"
-simulate:
+simulate: compile
 	$(VHDL_COMPILER) -r $(VHDL_FLAGS) $(TESTBENCH) --wave=$(WAVEFORM_FILE)
 
 # View the waveform using GTKWave

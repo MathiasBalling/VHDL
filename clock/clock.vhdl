@@ -2,9 +2,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity counter is
+entity clock is
   generic (
-    -- 6 bits for the counter to count from 0 to 63
+    -- 6 bits for the clock to count from 0 to 63
     n_bits : integer := 6
   );
 
@@ -15,19 +15,19 @@ entity counter is
     o_sec_cnt : out std_logic_vector(n_bits-1 downto 0);
     o_min_cnt : out std_logic_vector(n_bits-1 downto 0)
   );
-end counter;
+end clock;
 
-architecture structure of counter is
+architecture rtl of clock is
 begin
-  counter_process : process(i_clk, i_rst)
+  counter_process : process(i_clk) is
     variable v_min_cnt : unsigned(n_bits-1 downto 0) := (others => '0');
     variable v_sec_cnt : unsigned(n_bits-1 downto 0) := (others => '0');
   begin
-    if i_rst = '1' then
-      v_min_cnt := (others => '0');
-      v_sec_cnt := (others => '0');
-    elsif rising_edge(i_clk) then
-      if v_sec_cnt = 59 then
+    if rising_edge(i_clk) then
+      if i_rst = '1' then
+        v_min_cnt := (others => '0');
+        v_sec_cnt := (others => '0');
+      elsif v_sec_cnt = 59 then
         v_sec_cnt := (others => '0');
         if v_min_cnt = 59 then
           v_min_cnt := (others => '0');
@@ -42,4 +42,4 @@ begin
     o_sec_cnt <= std_logic_vector(v_sec_cnt);
     o_min_cnt <= std_logic_vector(v_min_cnt);
   end process;
-end structure;
+end rtl;
