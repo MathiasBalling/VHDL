@@ -8,10 +8,10 @@ VHDL_COMPILER = ghdl
 VHDL_FLAGS = --std=08
 
 # Get all VHDL files in the current directory
-VHDL_FILES = $(wildcard *.vhdl)
+VHDL_FILES = $(wildcard *.vhd)
 
 # Extract testbench file name without extension
-TESTBENCH = $(basename $(wildcard *_tb.vhdl))
+TESTBENCH = $(basename $(wildcard *_tb.vhd))
 
 # Testbench and waveform file
 WAVEFORM_FILE = $(TESTBENCH).ghw

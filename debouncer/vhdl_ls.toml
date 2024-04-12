@@ -1,0 +1,6 @@
+[libraries]
+lib.files = [
+  "debouncer.vhd",
+  "edl_controller.vhd",
+  "keypad_driver.vhd",
+]

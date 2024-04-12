@@ -1,4 +1,5 @@
 # Makefile for VHDL project with GTKWave
+.PHONY: format all compile simulate view clean lsp help
 
 # Compiler and flags
 VHDL_COMPILER = ghdl
@@ -44,3 +45,23 @@ view:
 # Clean generated files
 clean:
 	rm -f *.ghw *.cf
+
+lsp:
+	@echo "[libraries]" > vhdl_ls.toml
+	@echo "lib.files = [" >> vhdl_ls.toml
+	@for file in $(VHDL_FILES); do \
+		echo "  \"$$file\"," >> vhdl_ls.toml; \
+	done
+	@echo "]" >> vhdl_ls.toml
+
+help:
+	@echo "Usage: make [target]"
+	@echo "Available targets:"
+	@echo "  all       - Compile, simulate and view the waveform"
+	@echo "  compile   - Compile the VHDL files"
+	@echo "  simulate  - Simulate the testbench"
+	@echo "  view      - View the waveform using GTKWave"
+	@echo "  format    - Format the VHDL files"
+	@echo "  lsp       - Generate Language Server Protocol configuration"
+	@echo "  clean     - Clean generated files"
+	@echo "  help      - Display this help message"

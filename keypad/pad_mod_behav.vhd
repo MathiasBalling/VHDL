@@ -1,32 +1,32 @@
--- VHDL Entity pad_mod
+-- vhdl entity pad_mod
 --
--- Created:
---          by - Emad Samuel 
+-- created:
+--          by - emad samuel 
 --          at - 10:10:01 26/09/2019
 --
-LIBRARY ieee;
-USE ieee.std_logic_1164.all;
-USE ieee.std_logic_arith.all;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
 
-ENTITY pad_mod IS
-   PORT( 
-      key_pressed : IN     std_logic_vector (4 DOWNTO 0);
-      rows        : IN     std_logic_vector (3 DOWNTO 0);
-      cols        : OUT    std_logic_vector (3 DOWNTO 0)
+entity pad_mod is
+   port( 
+      key_pressed : in     std_logic_vector (4 downto 0);
+      rows        : in     std_logic_vector (3 downto 0);
+      cols        : out    std_logic_vector (3 downto 0)
    );
 
--- Declarations
+-- declarations
 
-END pad_mod ;
-
--- hds interface_end
+end pad_mod ;
 
 -- hds interface_end
 
+-- hds interface_end
+
 
 -- hds interface_end
-ARCHITECTURE behav OF pad_mod IS
-BEGIN
+architecture behav of pad_mod is
+begin
 process(rows,key_pressed)
   variable cols_var: std_logic_vector(3 downto 0);
 begin
@@ -39,5 +39,5 @@ end if;
 cols<= cols_var;
 end process;
 
-END behav;
+end behav;
 
