@@ -1,1 +1,6 @@
-Xilinx/vivado/2021.1/data/xhub/boards/XilinxBoardStore/boards/Xilinx/
+# Install guide 
+## Adding the board to vivado
+Copy the "pynq-z2/" dir into the directory below:
+Xilinx/vivado/{version}/data/xhub/boards/XilinxBoardStore/boards/Xilinx/
+
+## Use the constraint file (.xcd) to specify the physical ports used on the pynq-z2

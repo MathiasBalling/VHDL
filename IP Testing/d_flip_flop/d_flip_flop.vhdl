@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
  
-entity counter is
+entity d_flip_flop is
   port (
   i_enable : in std_logic;
   i_data  : in std_logic;
@@ -10,9 +10,9 @@ entity counter is
   o_q : out std_logic;
   o_qn : out std_logic
     );
-end counter;
+end d_flip_flop;
  
-architecture structure of counter is
+architecture rtl of d_flip_flop is
 begin
   process(i_enable)
   begin
@@ -21,4 +21,4 @@ begin
       o_qn <= not i_data;
     end if;
   end process;
-end structure;
+end rtl;

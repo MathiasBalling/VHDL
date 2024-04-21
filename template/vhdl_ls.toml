@@ -1,6 +1,0 @@
-[libraries]
-work.files = [
-  "full_adder.vhdl",
-  "full_adder_tb.vhdl",
-  "half_adder.vhdl",
-]

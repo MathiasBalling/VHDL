@@ -5,27 +5,33 @@
 VHDL_COMPILER = ghdl
 
 # Compiler flags
-VHDL_FLAGS = --std=08
+VHDL_FLAGS = --std=08 -fsynopsys
 
 # Get all VHDL files in the current directory
-VHDL_FILES = $(wildcard *.vhdl)
+VHDL_FILES = $(wildcard *.vhd)
 
 # Extract testbench file name without extension
-TESTBENCH = $(basename $(wildcard *_tb.vhdl))
+TESTBENCH = $(basename $(wildcard *_tb.vhd))
 
 # Testbench and waveform file
 WAVEFORM_FILE = $(TESTBENCH).ghw
 
 # Default target
+help:
+	@echo "Usage: make [target]"
+	@echo "Available targets:"
+	@echo "  all       - Compile, simulate and view the waveform"
+	@echo "  compile   - Compile the VHDL files"
+	@echo "  simulate  - Simulate the testbench"
+	@echo "  view      - View the waveform using GTKWave"
+	@echo "  format    - Format the VHDL files"
+	@echo "  lsp       - Generate Language Server Protocol configuration"
+	@echo "  clean     - Clean generated files"
+	@echo "  help      - Display this help message"
+
+# All targets
 all: compile simulate view
 
-format:
-	for file in $(filter-out %_tb.vhdl,$(VHDL_FILES)); do \
-		ghdl --format $$file > $${file%.*}_temp.vhdl && mv $${file%.*}_temp.vhdl $$file && $(VHDL_COMPILER) -a $(VHDL_FLAGS) $$file; \
-	done
-	for file in $(filter %_tb.vhdl,$(VHDL_FILES)); do \
-		ghdl --format $$file > $${file%.*}_temp.vhdl && mv $${file%.*}_temp.vhdl $$file && $(VHDL_COMPILER) -a $(VHDL_FLAGS) $$file; \
-	done
 
 # Compile VHDL files
 compile:
@@ -42,9 +48,17 @@ simulate:
 view:
 	gtkwave $(WAVEFORM_FILE)
 
+format:
+	for file in $(filter-out %_tb.vhd,$(VHDL_FILES)); do \
+		ghdl --format $$file > $${file%.*}_temp.vhd && mv $${file%.*}_temp.vhd $$file \
+	done
+	for file in $(filter %_tb.vhd,$(VHDL_FILES)); do \
+		ghdl --format $$file > $${file%.*}_temp.vhd && mv $${file%.*}_temp.vhd $$file \
+	done
+
 # Clean generated files
 clean:
-	rm -f *.ghw *.cf
+	rm -f *.ghw *.cf *_temp.vhd vhdl_ls.toml
 
 lsp:
 	@echo "[libraries]" > vhdl_ls.toml
@@ -54,14 +68,3 @@ lsp:
 	done
 	@echo "]" >> vhdl_ls.toml
 
-help:
-	@echo "Usage: make [target]"
-	@echo "Available targets:"
-	@echo "  all       - Compile, simulate and view the waveform"
-	@echo "  compile   - Compile the VHDL files"
-	@echo "  simulate  - Simulate the testbench"
-	@echo "  view      - View the waveform using GTKWave"
-	@echo "  format    - Format the VHDL files"
-	@echo "  lsp       - Generate Language Server Protocol configuration"
-	@echo "  clean     - Clean generated files"
-	@echo "  help      - Display this help message"
