@@ -1,0 +1,14 @@
+[libraries]
+lib.files = [
+  "full_adder_tb.vhd",
+  "../IP/clock_divider.vhd",
+  "../IP/counter.vhd",
+  "../IP/d_flip_flop.vhd",
+  "../IP/d_latch.vhd",
+  "../IP/debouncer.vhd",
+  "../IP/full_adder.vhd",
+  "../IP/half_adder.vhd",
+  "../IP/keypad_encoder.vhd",
+  "../IP/nbit_multiplexer.vhd",
+  "../IP/pwm.vhd",
+]

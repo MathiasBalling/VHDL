@@ -1,4 +1,4 @@
-# Makefile for VHD project with GTKWave
+# Makefile for VHDL project with GTKWave
 .PHONY: format all compile simulate view clean lsp help
 
 # Compiler and flags
@@ -8,7 +8,7 @@ VHD_COMPILER = ghdl
 VHD_FLAGS = --std=08 -fsynopsys
 
 # IP files
-IP_FILES = $(wildcard ../IP/*.vhd)
+IP_FILES = $(wildcard ../../IP/*.vhd)
 
 # Get all VHD files in the current directory
 VHD_FILES = $(wildcard *.vhd)
@@ -37,7 +37,7 @@ all: compile simulate view
 
 # Compile VHD files
 compile:
-	$(VHD_COMPILER) -a $(VHD_FLAGS) $(VHD_FILES) $(IP_FILES)
+	$(VHD_COMPILER) -a $(VHD_FLAGS) $(IP_FILES) $(VHD_FILES)
 
 # Simulate the testbench
 # Remember to add assertion or finish to the testbench!
@@ -63,13 +63,12 @@ clean:
 	rm -f *.ghw *.cf *_temp.vhd vhdl_ls.toml
 
 lsp:
-	@echo "[libraries]" > vhdl_ls.toml
+	@echo "standard = '2008'" > vhdl_ls.toml
+	@echo "[libraries]" >> vhdl_ls.toml
 	@echo "lib.files = [" >> vhdl_ls.toml
 	@for file in $(VHD_FILES); do \
 		echo "  \"$$file\"," >> vhdl_ls.toml; \
 	done
-	@echo "]" >> vhdl_ls.toml
-	@echo "IP.files = [" >> vhdl_ls.toml
 	@for file in $(IP_FILES); do \
 		echo "  \"$$file\"," >> vhdl_ls.toml; \
 	done

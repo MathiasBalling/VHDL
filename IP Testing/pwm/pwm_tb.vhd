@@ -12,10 +12,10 @@ architecture behave of pwm_tb is
   signal duty_cycle : std_logic_vector(7 downto 0) := "00000000";
   signal pwm_out : std_logic := '0';
 begin
-  pwm_inst: entity work.pwm
+  pwm_inst : entity work.pwm
     port map(
       clk => clk,
-      reset => rst,
+      rst => rst,
       duty_cycle => duty_cycle,
       pwm_out => pwm_out
     );
@@ -23,7 +23,14 @@ begin
 
   process
   begin
+    rst <= '1';
+    wait for 10 ns;
+    rst <= '0';
+    duty_cycle <= std_logic_vector(to_unsigned(0, 8));
+    wait for 1000 ns;
     duty_cycle <= std_logic_vector(to_unsigned(100, 8));
+    wait for 1000 ns;
+    duty_cycle <= std_logic_vector(to_unsigned(20, 8));
     wait for 1000 ns;
     finish;
   end process;

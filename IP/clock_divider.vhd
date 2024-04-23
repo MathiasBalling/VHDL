@@ -10,7 +10,7 @@ entity clock_divider is
     i_clk  : in std_logic;
     i_rst : in std_logic;
 
-    o_clk_div : inout std_logic := '0'
+    o_clk_div : inout std_logic
   );
 end clock_divider;
  

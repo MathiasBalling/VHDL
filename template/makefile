@@ -68,8 +68,6 @@ lsp:
 	@for file in $(VHD_FILES); do \
 		echo "  \"$$file\"," >> vhdl_ls.toml; \
 	done
-	@echo "]" >> vhdl_ls.toml
-	@echo "IP.files = [" >> vhdl_ls.toml
 	@for file in $(IP_FILES); do \
 		echo "  \"$$file\"," >> vhdl_ls.toml; \
 	done

@@ -3,34 +3,43 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity pwm is
-  port (clk : in std_logic;
-        rst : in std_logic;
-        duty_cycle : in std_logic_vector(7 downto 0);
-        pwm_out : out std_logic);
+  port ( clk : in std_logic;
+         rst : in std_logic;
+         duty_cycle : in std_logic_vector(7 downto 0);
+         pwm_out : out std_logic
+       );
 end pwm;
 
 architecture behavioral of pwm is
-    signal counter : unsigned(7 downto 0) := (others => '0');
-    signal pwm_value : unsigned(7 downto 0) := (others => '0');
-begin
-    process(clk, rst)
-    begin
-        if rst = '1' then
-            counter <= (others => '0');
-            pwm_out <= '0';
-        elsif rising_edge(clk) then
-            if counter = 200 then
-                counter <= (others => '0');
-            else
-                counter <= counter + 1;
-            end if;
+  constant period : integer := 100;
 
-            pwm_value <= unsigned(duty_cycle);
-            if counter < pwm_value then
-                pwm_out <= '1';
-            else
-                pwm_out <= '0';
-            end if;
+  signal counter : unsigned(7 downto 0) := (others => '0');
+  signal pwm : std_logic := '0';
+begin
+
+  process(clk, rst)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        counter <= (others => '0');
+        pwm <= '0';
+      else
+        -- Counting up to period for fixed PWM frequency
+        if counter = period - 1 then
+          counter <= (others => '0');
+        else
+          counter <= counter + 1;
         end if;
-    end process;
+
+        -- Duty cycle control
+        if counter < unsigned(duty_cycle) then
+          pwm <= '1';
+        else
+          pwm <= '0';
+        end if;
+      end if;
+    end if;
+  end process;
+
+  pwm_out <= pwm;
 end behavioral;
