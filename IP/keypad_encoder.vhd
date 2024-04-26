@@ -14,9 +14,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use IEEE.math_real.all;
 
--- Pull-up on i_col
--- Col_in is low when activated
--- Row_out should be driven low when scaning
+-- Pull-down on i_col
+-- i_col is high when activated
+-- o_row should be driven high when scaning
  
 entity keypad_encoder is
   port (
@@ -44,7 +44,7 @@ begin
     begin
       if i_rst = '1' then
         current_state <= s_rst;
-        o_row <= (others => '1');
+        o_row <= (others => '0');
       elsif rising_edge(i_clk) then
         current_state <= next_state;
         case next_state is
@@ -52,14 +52,14 @@ begin
             if row = 3 then row <= 0;
             else row <= row + 1;
             end if;
-            o_row <= not std_logic_vector(to_unsigned(2**row, 4));
+            o_row <= std_logic_vector(to_unsigned(2**row, 4));
           when others =>
             o_row <= activated_row;
             case activated_row is
-              when "1110" => row <= 0;
-              when "1101" => row <= 1;
-              when "1011" => row <= 2;
-              when "0111" => row <= 3;
+              when "0001" => row <= 0;
+              when "0010" => row <= 1;
+              when "0100" => row <= 2;
+              when "1000" => row <= 3;
               when others => null;
             end case;
       end case;
@@ -72,22 +72,22 @@ begin
       case current_state is
       when s_rst =>
         next_state <= scan;
-        activated_row <= (others => '1');
+        activated_row <= (others => '0');
       when scan =>
-        if i_col /= "1111" then
+        if i_col /= "0000" then
           -- Row is found
           activated_row <= o_row;
           -- Find the column
-          if    i_col(0) = '0' then col <= 0;
-          elsif i_col(1) = '0' then col <= 1;
-          elsif i_col(2) = '0' then col <= 2;
-          elsif i_col(3) = '0' then col <= 3;
+          if    i_col(0) = '1' then col <= 0;
+          elsif i_col(1) = '1' then col <= 1;
+          elsif i_col(2) = '1' then col <= 2;
+          elsif i_col(3) = '1' then col <= 3;
           end if;
           next_state <= press;
         end if;
       when press =>
         -- wait for o_key release
-        if i_col = "1111" then next_state <= scan;
+        if i_col = "0000" then next_state <= scan;
         end if;
       when others => null;
       end case;

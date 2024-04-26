@@ -23,36 +23,36 @@ architecture behave of keypad_encoder_tb is
 begin
   keypad_encoder_inst: entity work.keypad_encoder
    port map(
-      clk => clk,
-      rst => rst,
-      col_in => col_in,
-      row_out => row_out,
-      pressed => pressed,
-      key => key
+      i_clk => clk,
+      i_rst => rst,
+      i_col => col_in,
+      o_row => row_out,
+      o_pressed => pressed,
+      o_key => key
   );
 
   clk <= not clk after 1 ns;
 
   keypad_stimulus : process(row_out,key_stimulus)
-    variable cols_var: std_logic_vector(3 downto 0) := "1111";
+    variable cols_var: std_logic_vector(3 downto 0) := "0000";
   begin
     if key_stimulus(4) = '1' then
       -- Put the right column value when a row is driven high
-      if (2 ** to_integer(unsigned(key_stimulus(3 downto 2)))) = to_integer(unsigned(not row_out)) then
+      if (2 ** to_integer(unsigned(key_stimulus(3 downto 2)))) = to_integer(unsigned(row_out)) then
         if key_stimulus(1 downto 0) = "11" then
-          cols_var := "0111";
+          cols_var := "1000";
         elsif key_stimulus(1 downto 0) = "10" then
-          cols_var := "1011";
+          cols_var := "0100";
         elsif key_stimulus(1 downto 0) = "01" then
-          cols_var := "1101";
+          cols_var := "0010";
         elsif key_stimulus(1 downto 0) = "00" then
-          cols_var := "1110";
+          cols_var := "0001";
         end if;
       else
-        cols_var := "1111";
+        cols_var := "0000";
       end if;
     else
-      cols_var := "1111";
+      cols_var := "0000";
     end if;
     col_in <= cols_var;
   end process;
