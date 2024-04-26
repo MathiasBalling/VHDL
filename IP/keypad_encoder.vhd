@@ -49,6 +49,7 @@ begin
         current_state <= next_state;
         case next_state is
           when scan =>
+            -- Increment row
             case row is
               when 0 => 
                 row <= 1;
@@ -95,15 +96,24 @@ begin
             when others => null;
           end case;
           -- Find the column
-          if    i_col(0) = '1' then col <= 0;
-          elsif i_col(1) = '1' then col <= 1;
-          elsif i_col(2) = '1' then col <= 2;
-          elsif i_col(3) = '1' then col <= 3;
-          end if;
-          next_state <= press;
+          case i_col is
+            when "0001" => 
+              col <= 0;
+              next_state <= press;
+            when "0010" =>
+              col <= 1;
+              next_state <= press;
+            when "0100" =>
+              col <= 2;
+              next_state <= press;
+            when "1000" =>
+              col <= 3;
+              next_state <= press;
+            when others => activated_row <= (others => '0'); -- Multiple keys pressed (ignore)
+          end case;
         end if;
       when press =>
-        -- wait for o_key release
+        -- wait for key release
         if i_col = "0000" then next_state <= scan;
         end if;
       when others => null;
@@ -114,9 +124,6 @@ begin
   current_state_logic : process(current_state)
     begin
       case current_state is
-        when scan =>
-          o_pressed <= '0';
-          o_key <= (others => '0');
         when press =>
           o_pressed <= '1';
           -- Look up table
@@ -139,7 +146,9 @@ begin
             when "1111" => o_key <= "1101"; -- D
             when others => null;
             end case;
-        when others => null;
+        when others =>
+          o_pressed <= '0';
+          o_key <= (others => '0');
       end case;
     end process;
 end architecture behave;

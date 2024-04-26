@@ -62,14 +62,13 @@ begin
     rst <= '1';
     wait for 10 ns;
     rst <= '0';
-    key_stimulus <= "00000";
-    wait for 20 ns;
-    key_stimulus <= "11001";
-    wait for 20 ns;
-    key_stimulus <= "00001";
-    wait for 20 ns;
-    key_stimulus <= "10001";
-    wait for 20 ns;
+    -- Loop through all keys
+    for i in 0 to 15 loop
+      key_stimulus <= '1' & std_logic_vector(to_unsigned(i,4));
+      wait for 200 ns;
+      key_stimulus <= "00000";
+      wait for 20 ns;
+    end loop;
     finish;
   end process;
 end architecture behave;
