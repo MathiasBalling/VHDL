@@ -51,17 +51,17 @@ begin
           when scan =>
             case row is
               when 0 => 
-                o_row <= "0001";
                 row <= 1;
-              when 1 => 
                 o_row <= "0010";
+              when 1 => 
                 row <= 2;
-              when 2 => 
                 o_row <= "0100";
+              when 2 => 
                 row <= 3;
-              when 3 => 
                 o_row <= "1000";
+              when 3 => 
                 row <= 0;
+                o_row <= "0001";
               when others => null;
             end case;
           when others =>
@@ -87,7 +87,13 @@ begin
       when scan =>
         if i_col /= "0000" then
           -- Row is found
-          activated_row <= std_logic_vector(to_unsigned(row, 4));
+          case row is
+            when 0 => activated_row <= "0001";
+            when 1 => activated_row <= "0010";
+            when 2 => activated_row <= "0100";
+            when 3 => activated_row <= "1000";
+            when others => null;
+          end case;
           -- Find the column
           if    i_col(0) = '1' then col <= 0;
           elsif i_col(1) = '1' then col <= 1;
