@@ -25,38 +25,27 @@ architecture rtl of keypad_encoder_cnt is
   signal s_pressed : std_logic;
 begin
   encoder_inst : entity work.nbit_decoder
-  generic map(
-    n_sel_bits => n_sel_bits  -- number of input bits (default: 8)
-  )
-  port map(
-    data => std_logic_vector(s_cnt(3 downto 2)),  -- input data
-    output => o_row
-  );
+  generic map( n_sel_bits => n_sel_bits)
+  port map( data => std_logic_vector(s_cnt(3 downto 2)),  -- input data
+            output => o_row);
 
   counter_inst : entity work.counter
-  generic map(
-    n_bits => 4
-  )
-  port map(
-    i_en => not s_pressed,
-    i_clk => i_clk,
-    i_rst => i_rst,
-    o_cnt => s_cnt
-  );
+  generic map( n_bits => 4)
+  port map( i_en => not s_pressed,
+            i_clk => i_clk,
+            i_rst => i_rst,
+            o_cnt => s_cnt);
 
   mux_inst : entity work.multiplexer
-    generic map(
-        n_sel_bits => 2
-    )
-    port map(
-        sel => std_logic_vector(s_cnt(1 downto 0)),
-        din  => i_col,
-        dout => s_pressed
-    );
+  generic map( n_sel_bits => 2)
+  port map( sel => std_logic_vector(s_cnt(1 downto 0)),
+            din  => i_col,
+            dout => s_pressed);
 
   process(s_pressed, s_cnt)
   begin
     if s_pressed = '1' then
+      -- Look-up table
       case s_cnt is
         when "0000" => s_key <= "0001"; -- 1
         when "0001" => s_key <= "0010"; -- 2

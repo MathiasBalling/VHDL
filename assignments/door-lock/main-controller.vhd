@@ -39,7 +39,7 @@ architecture rtl of controller is
   signal kp_pressed : std_logic;
 
   -- pwm
-  signal pwm : std_logic;
+  signal pwm_out : std_logic;
 begin
   --clock_divider_inst : entity work.clock_divider
   --generic map( n_bits => 14)
@@ -48,7 +48,7 @@ begin
       --      o_clk_div => clk_div);
   clk_div <= clk;
 
-  keypad_encoder_inst : entity work.keypad_encoder
+  keypad_encoder_inst : entity work.keypad_encoder_cnt
   port map( i_clk => clk_div,
             i_rst => rst,
             i_col => col,
@@ -78,8 +78,8 @@ begin
   port map( clk => clk_div,
             rst => rst,
             duty_cycle => edl_duty_cycle,
-            pwm_out => pwm);
+            pwm_out => pwm_out);
   -- PWM output
-  led2 <= pwm;
+  led2 <= pwm_out;
 end rtl;
 
