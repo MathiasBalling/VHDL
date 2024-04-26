@@ -37,7 +37,7 @@ architecture behave of keypad_encoder is
   type state_type is (s_rst, scan, press);
   signal current_state, next_state : state_type := scan;
   signal col : integer range 0 to 3;
-  signal row : integer range 0 to 3;
+  signal row : integer range 0 to 3 := 0;
   signal activated_row : std_logic_vector(3 downto 0);
 begin
   clocked_process : process(i_clk, i_rst)
@@ -49,10 +49,21 @@ begin
         current_state <= next_state;
         case next_state is
           when scan =>
-            if row = 3 then row <= 0;
-            else row <= row + 1;
-            end if;
-            o_row <= std_logic_vector(to_unsigned(2**row, 4));
+            case row is
+              when 0 => 
+                o_row <= "0001";
+                row <= 1;
+              when 1 => 
+                o_row <= "0010";
+                row <= 2;
+              when 2 => 
+                o_row <= "0100";
+                row <= 3;
+              when 3 => 
+                o_row <= "1000";
+                row <= 0;
+              when others => null;
+            end case;
           when others =>
             o_row <= activated_row;
             case activated_row is
@@ -76,7 +87,7 @@ begin
       when scan =>
         if i_col /= "0000" then
           -- Row is found
-          activated_row <= o_row;
+          activated_row <= std_logic_vector(to_unsigned(row, 4));
           -- Find the column
           if    i_col(0) = '1' then col <= 0;
           elsif i_col(1) = '1' then col <= 1;
