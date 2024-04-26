@@ -35,7 +35,7 @@ end keypad_encoder;
  
 architecture behave of keypad_encoder is 
   type state_type is (s_rst, scan, press);
-  signal current_state, next_state : state_type := scan;
+  signal current_state, next_state : state_type := s_rst;
   signal col : integer range 0 to 3;
   signal row : integer range 0 to 3 := 0;
   signal activated_row : std_logic_vector(3 downto 0);
@@ -47,7 +47,7 @@ begin
         o_row <= (others => '0');
       elsif rising_edge(i_clk) then
         current_state <= next_state;
-        case next_state is
+        case current_state is
           when scan =>
             -- Increment row
             case row is
