@@ -47,19 +47,19 @@ begin
         when s_rst =>
           next_state <= s0;
         when s0 =>
-          if unsigned(i_key) = "0100" then next_state <= s1;
+          if i_key = "0100" then next_state <= s1;
           else next_state <= s0;
           end if;
         when s1 =>
-          if unsigned(i_key) = "0101" then next_state <= s2;
+          if i_key = "0101" then next_state <= s2;
           else next_state <= s0;
           end if;
         when s2 =>
-          if unsigned(i_key) = "0110" then next_state <= s3;
+          if i_key = "0110" then next_state <= s3;
           else next_state <= s0;
           end if;
         when s3 =>
-          if unsigned(i_key) = "0111" then next_state <= s4;
+          if i_key = "0111" then next_state <= s4;
           else next_state <= s0;
           end if;
         when s4 =>

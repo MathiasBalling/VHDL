@@ -4,7 +4,6 @@ use ieee.numeric_std.all;
 
 entity controller is
   port( clk : in std_logic;
-        rst : in std_logic;
 
         led : out std_logic_vector(3 downto 0);
         led4_g : out std_logic;
@@ -23,6 +22,7 @@ end entity;
 
 architecture rtl of controller is
   signal clk_div : std_logic;
+  signal rst : std_logic := '0';
 
   -- EDL controller
   signal edl_busy : std_logic;
