@@ -5,12 +5,10 @@ use ieee.numeric_std.all;
 entity controller is
   port( clk : in std_logic;
         rst : in std_logic;
-        -- For locked/unlocked state
-        led0 : out std_logic;
-        -- Inverted output of led0
-        led1 : out std_logic;
-        -- For PWM
-        led2 : out std_logic;
+
+        led : out std_logic_vector(3 downto 0);
+        led4_g : out std_logic;
+        led4_r : out std_logic;
         -- For keypad
         col : in std_logic_vector(3 downto 0);
         row : out std_logic_vector(3 downto 0)
@@ -41,6 +39,7 @@ architecture rtl of controller is
   -- pwm
   signal pwm_out : std_logic;
 begin
+  -- clock divider desabled for simulation
   --clock_divider_inst : entity work.clock_divider
   --generic map( n_bits => 14)
   --port map( i_clk => clk,
@@ -70,9 +69,12 @@ begin
             o_duty_cycle => edl_duty_cycle,
             o_busy => edl_busy,
             o_unlocked => edl_unlocked);
-  -- Status LED
-  led0 <= edl_unlocked;
-  led1 <= not edl_unlocked;
+  -- Status LEDs
+  led(0) <= db_intr;
+  led(1) <= kp_pressed;
+  led(2) <= edl_busy;
+  led4_g <= edl_unlocked;
+  led4_r <= not edl_unlocked;
 
   pwm_inst : entity work.pwm
   port map( clk => clk_div,
@@ -80,6 +82,6 @@ begin
             duty_cycle => edl_duty_cycle,
             pwm_out => pwm_out);
   -- PWM output
-  led2 <= pwm_out;
+  led(3) <= pwm_out;
 end rtl;
 

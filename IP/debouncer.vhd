@@ -15,47 +15,39 @@ architecture rtl of debouncer is
   signal next_state : state_type;
 begin
   clocked_process: process(clk, rst)
-    begin
-      if rst = '1' then
+  begin
+    if rst = '1' then
       current_state <= S0;
-      elsif rising_edge(clk) then
+    elsif rising_edge(clk) then
       current_state <= next_state;
-      end if;
-    end process;
+    end if;
+  end process;
 
   next_state_logic : process(current_state, inp)
-    begin
-      case current_state is
-        when S0 =>
-          if inp = '1' then
-            next_state <= S1;
-          else
-            next_state <= S0;
-          end if;
-        when S1 =>
-          if inp = '1' then
-            next_state <= S2;
-          else
-            next_state <= S0;
-          end if;
-        when S2 =>
-          if inp = '1' then
-            next_state <= S2;
-          else
-            next_state <= S0;
-          end if;
-      end case;
-    end process;
+  begin
+    case current_state is
+      when S0 =>
+        if inp = '1' then
+          next_state <= S1;
+        end if;
+      when S1 =>
+        next_state <= S2;
+      when S2 =>
+        if inp /= '1' then
+          next_state <= S0;
+        end if;
+    end case;
+  end process;
 
   current_state_logic : process(current_state)
-    begin
-      case current_state is
-        when S0 =>
-          outp <= '0';
-        when S1 =>
-          outp <= '1';
-        when S2 =>
-          outp <= '0';
-      end case;
-    end process;
+  begin
+    case current_state is
+      when S0 =>
+        outp <= '0';
+      when S1 =>
+        outp <= '1';
+      when S2 =>
+        outp <= '0';
+    end case;
+  end process;
 end architecture rtl;
