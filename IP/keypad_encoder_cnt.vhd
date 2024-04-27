@@ -17,15 +17,16 @@ entity keypad_encoder_cnt is
 end entity;
 
 architecture rtl of keypad_encoder_cnt is
-  constant n_sel_bits : integer := 2;
   signal s_key : std_logic_vector(3 downto 0);
 
   -- Counter
   signal s_cnt : std_logic_vector(3 downto 0);
+
+  -- Used to stop the counter when a key is pressed
   signal s_pressed : std_logic;
 begin
   encoder_inst : entity work.nbit_decoder
-  generic map( n_sel_bits => n_sel_bits)
+  generic map( n_sel_bits => 2)
   port map( data => std_logic_vector(s_cnt(3 downto 2)),  -- input data
             output => o_row);
 

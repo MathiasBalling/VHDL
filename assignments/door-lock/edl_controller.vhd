@@ -16,12 +16,18 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity edl_controller is
+  generic (
+  -- Passcode
+  nr1 : unsigned(3 downto 0) := "0100";
+  nr2 : unsigned(3 downto 0) := "0101";
+  nr3 : unsigned(3 downto 0) := "0110";
+  nr4 : unsigned(3 downto 0) := "0111");
+
   port (
   i_clk, i_rst, i_intr : in std_logic;
   i_key : in std_logic_vector(3 downto 0);
   o_duty_cycle : out std_logic_vector(7 downto 0);
-  o_busy, o_unlocked : out std_logic
-);
+  o_busy, o_unlocked : out std_logic);
 end edl_controller;
 
 architecture behave of edl_controller is 
@@ -47,19 +53,19 @@ begin
         when s_rst =>
           next_state <= s0;
         when s0 =>
-          if i_key = "0100" then next_state <= s1;
+          if unsigned(i_key) = nr1 then next_state <= s1;
           else next_state <= s0;
           end if;
         when s1 =>
-          if i_key = "0101" then next_state <= s2;
+          if unsigned(i_key) = nr2 then next_state <= s2;
           else next_state <= s0;
           end if;
         when s2 =>
-          if i_key = "0110" then next_state <= s3;
+          if unsigned(i_key) = nr3 then next_state <= s3;
           else next_state <= s0;
           end if;
         when s3 =>
-          if i_key = "0111" then next_state <= s4;
+          if unsigned(i_key) = nr4 then next_state <= s4;
           else next_state <= s0;
           end if;
         when s4 =>
