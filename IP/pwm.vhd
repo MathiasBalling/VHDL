@@ -3,6 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity pwm is
+  generic ( period : integer := 100);
   port ( clk : in std_logic;
          rst : in std_logic;
          duty_cycle : in std_logic_vector(7 downto 0);
@@ -11,8 +12,6 @@ entity pwm is
 end pwm;
 
 architecture behavioral of pwm is
-  constant period : integer := 100;
-
   signal counter : unsigned(7 downto 0) := (others => '0');
   signal pwm : std_logic := '0';
 begin

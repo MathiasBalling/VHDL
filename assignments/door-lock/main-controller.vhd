@@ -17,8 +17,8 @@ end entity;
 -- Clock divider to generate <10KHz clock
 -- Keypad encoder
 -- Debouncer for keypad (only 1 key press at a time)
--- EDL controller with status led0 (locked/unlocked)
--- PWM for LED1 (depends on keypad input in unlocked state)
+-- EDL controller with status leds (locked/unlocked)
+-- PWM for LED3 (depends on keypad input in unlocked state)
 
 architecture rtl of controller is
   signal clk_div : std_logic;
@@ -70,14 +70,19 @@ begin
             o_busy => edl_busy,
             o_unlocked => edl_unlocked);
   -- Status LEDs
+  -- See debounder output to led0
   led(0) <= db_intr;
+  -- See keypad pressed to led1
   led(1) <= kp_pressed;
+  -- See if the right keycode combination is entered
   led(2) <= edl_busy;
+  -- See if the door is unlocked(green) or locked(red)
   led4_g <= edl_unlocked;
   led4_r <= not edl_unlocked;
 
   pwm_inst : entity work.pwm
-  port map( clk => clk_div,
+  generic map( period => 100)
+  port map( clk => clk,
             rst => rst,
             duty_cycle => edl_duty_cycle,
             pwm_out => pwm_out);
